@@ -16,14 +16,21 @@ public class Turret : MonoBehaviour
 
     [Header("Projectile")]
     [SerializeField] float speed = 30;
+    [SerializeField] float maxSpeed = 1000;
+    [SerializeField] float speedBust = 10;
+
+    float currSpeed = 0;
 
     [SerializeField] Projectile projectilePrefab;
 
     [SerializeField, Min(1)] float timer = 5;
 
+    [SerializeField] Projection projection;
+
 
     Vector2 movement;
     bool isMoving = false;
+    bool isPowering = false;
 
     float rotationX = 0;
 
@@ -31,7 +38,7 @@ public class Turret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        currSpeed = speed;
     }
 
     // Update is called once per frame
@@ -40,14 +47,22 @@ public class Turret : MonoBehaviour
         if (isMoving)
         {
 
-            rotationX -= movement.y * sensitivityVert;
+            rotationX -= movement.y * sensitivityVert * Time.deltaTime;
             rotationX = Mathf.Clamp(rotationX, minVert, maxVert);
 
-            float delta = movement.x * sensitivityHor;
+            float delta = movement.x * sensitivityHor * Time.deltaTime;
             float rotationY = transform.localEulerAngles.y + delta;
 
             transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
+
+            projection.SimulateTrajectory(projectilePrefab, transform, currSpeed, timer);
           
+        }
+
+        if (isPowering)
+        {
+            currSpeed += speedBust * Time.deltaTime;
+            projection.SimulateTrajectory(projectilePrefab, transform, currSpeed, timer);
         }
     }
 
@@ -84,12 +99,27 @@ public class Turret : MonoBehaviour
 
     public void Fire(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+
+  
+
+        if (context.phase == InputActionPhase.Started)
+        {
+         //   currSpeed = speed;
+         //   isPowering = true;
+          
+        }
+        else if (context.phase == InputActionPhase.Canceled)
         {           
             Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
-            projectile.Init(speed, timer);
+            projectile.Init(currSpeed, timer);
 
-            Debug.Log("Fire");
+            isPowering = false;
+
+            Debug.Log("Fire. New speed " + currSpeed);
+
+            currSpeed = speed;
+
+            
         }
     }
 
