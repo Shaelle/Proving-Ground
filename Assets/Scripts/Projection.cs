@@ -43,19 +43,32 @@ public class Projection : MonoBehaviour
 
     public void SimulateTrajectory(Projectile projectilePrefab, Transform pos, float speed, float time, bool explosive)
     {
+
+        bool isDestroyed = false;
+        void OnDestroy() => isDestroyed = true;
+
         Projectile ghostObj = Instantiate(projectilePrefab, pos.position, pos.rotation);
         SceneManager.MoveGameObjectToScene(ghostObj.gameObject, simulationScene);
 
-        ghostObj.Init(speed, time, explosive);
+        ghostObj.Init(speed, time, explosive, OnDestroy, true);
 
-        line.positionCount = maxPhysicsFrameIterations;
+        line.positionCount = 1;
+        line.SetPosition(0, ghostObj.transform.position);
 
-        for (int i = 0; i < maxPhysicsFrameIterations; i++)
+        while(line.positionCount < maxPhysicsFrameIterations)
         {
+            
             physicsScene.Simulate(Time.fixedDeltaTime);
-            line.SetPosition(i, ghostObj.transform.position);
+
+            if (isDestroyed) break;
+
+            line.positionCount++;
+            line.SetPosition(line.positionCount -1, ghostObj.transform.position);
+            
         }
 
         Destroy(ghostObj.gameObject);
     }
+
+
 }
