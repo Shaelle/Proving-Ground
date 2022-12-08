@@ -226,7 +226,8 @@ MonoBehaviour:
   minVert: -80
   maxVert: 20
   speed: 300
-  projectilePrefab: {fileID: 6590068583321090918, guid: 3028c9b9d1acf0343a7518e8ac8e5ad3, type: 3}
+  projectilePrefab: {fileID: 4551602810842340014, guid: 3028c9b9d1acf0343a7518e8ac8e5ad3, type: 3}
+  timer: 5
 --- !u!114 &73310624
 MonoBehaviour:
   m_ObjectHideFlags: 0

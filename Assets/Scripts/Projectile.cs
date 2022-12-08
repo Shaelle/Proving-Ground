@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Rigidbody body;
+
+    private void Awake() => body = GetComponent<Rigidbody>();
+
+    public void Init(float speed, float time)
     {
-        
+        body.AddRelativeForce(Vector3.forward * speed);
+
+        StartCoroutine(Timer(time));
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator Timer(float time)
     {
-        
-    }
+        yield return new WaitForSeconds(time);
 
-    private void OnCollisionEnter(Collision collision)
-    {
         Destroy(this.gameObject);
     }
+
+  
+
+ 
 }

@@ -17,7 +17,9 @@ public class Turret : MonoBehaviour
     [Header("Projectile")]
     [SerializeField] float speed = 30;
 
-    [SerializeField] Rigidbody projectilePrefab;
+    [SerializeField] Projectile projectilePrefab;
+
+    [SerializeField, Min(1)] float timer = 5;
 
 
     Vector2 movement;
@@ -84,8 +86,8 @@ public class Turret : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Performed)
         {           
-            Rigidbody projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
-            projectile.AddRelativeForce(Vector3.forward * speed);
+            Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
+            projectile.Init(speed, timer);
 
             Debug.Log("Fire");
         }
