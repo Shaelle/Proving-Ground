@@ -41,12 +41,12 @@ public class Projection : MonoBehaviour
     [SerializeField] LineRenderer line;
     [SerializeField] int maxPhysicsFrameIterations = 100;
 
-    public void SimulateTrajectory(Projectile projectilePrefab, Transform pos, float speed, float time)
+    public void SimulateTrajectory(Projectile projectilePrefab, Transform pos, float speed, float time, bool explosive)
     {
         Projectile ghostObj = Instantiate(projectilePrefab, pos.position, pos.rotation);
         SceneManager.MoveGameObjectToScene(ghostObj.gameObject, simulationScene);
 
-        ghostObj.Init(speed, time);
+        ghostObj.Init(speed, time, explosive);
 
         line.positionCount = maxPhysicsFrameIterations;
 

@@ -19,6 +19,8 @@ public class Turret : MonoBehaviour
     [SerializeField] float maxSpeed = 1000;
     [SerializeField] float speedBust = 10;
 
+    [SerializeField] bool explosive = false;
+
     float currSpeed = 0;
 
     [SerializeField] Projectile projectilePrefab;
@@ -55,15 +57,21 @@ public class Turret : MonoBehaviour
 
             transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
 
-            projection.SimulateTrajectory(projectilePrefab, transform, currSpeed, timer);
+            ShowTrajectory();
           
         }
 
         if (isPowering)
         {
             currSpeed += speedBust * Time.deltaTime;
-            projection.SimulateTrajectory(projectilePrefab, transform, currSpeed, timer);
+            ShowTrajectory();
         }
+    }
+
+
+    public void ShowTrajectory()
+    {
+        projection.SimulateTrajectory(projectilePrefab, transform, currSpeed, timer, explosive);
     }
 
 
@@ -111,11 +119,11 @@ public class Turret : MonoBehaviour
         else if (context.phase == InputActionPhase.Canceled)
         {           
             Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
-            projectile.Init(currSpeed, timer);
+            projectile.Init(currSpeed, timer, explosive);
 
             isPowering = false;
 
-            Debug.Log("Fire. New speed " + currSpeed);
+           // Debug.Log("Fire. New speed " + currSpeed);
 
             currSpeed = speed;
 
