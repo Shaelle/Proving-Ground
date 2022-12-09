@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public class Turret : MonoBehaviour
@@ -22,12 +23,15 @@ public class Turret : MonoBehaviour
     [SerializeField] bool explosive = false;
 
     float currSpeed = 0;
+    public float CurrSpeed => currSpeed * Time.deltaTime;
 
     [SerializeField] Projectile projectilePrefab;
 
     [SerializeField, Min(1)] float timer = 5;
 
     [SerializeField] Projection projection;
+
+    [SerializeField] Toggle button;
 
 
     Vector2 movement;
@@ -40,8 +44,15 @@ public class Turret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        button.isOn = explosive;
         currSpeed = speed;
     }
+
+
+    private void OnEnable() => button.onValueChanged.AddListener(ToggleExplosive);
+
+    private void OnDisable() => button.onValueChanged.RemoveListener(ToggleExplosive);
+
 
     // Update is called once per frame
     void Update()
@@ -63,7 +74,7 @@ public class Turret : MonoBehaviour
 
         if (isPowering)
         {
-            currSpeed += speedBust * Time.deltaTime;
+            currSpeed += speedBust;
             ShowTrajectory();
         }
     }
@@ -130,5 +141,12 @@ public class Turret : MonoBehaviour
             
         }
     }
+
+
+    private void ToggleExplosive(bool value)
+    {
+        explosive = value;
+    }
+
 
 }

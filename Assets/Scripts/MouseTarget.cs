@@ -6,11 +6,13 @@ using UnityEngine.InputSystem;
 public class MouseTarget : MonoBehaviour
 {
 
-    [SerializeField] GameObject pointerPrefab;
+    [SerializeField] TargetPointer pointerPrefab;
 
-    GameObject pointer;
+    TargetPointer pointer;
 
     [SerializeField] Turret turret;
+
+    [SerializeField] float debugSpeed = 20;
 
     // Start is called before the first frame update
     void Start()
@@ -40,10 +42,53 @@ public class MouseTarget : MonoBehaviour
 
             Vector3 lookPos = new Vector3(pointer.transform.position.x, turret.transform.position.y, pointer.transform.position.z);
 
-            turret.gameObject.transform.LookAt(lookPos);
+           // turret.gameObject.transform.LookAt(lookPos);
+
+            float angle;
+            if (CalculateAngle(turret.CurrSpeed, out angle))
+            {
+                pointer.SetTarget(true);
+                turret.gameObject.transform.Rotate(angle, 0, 0);
+            }
+            else pointer.SetTarget(false);
+
 
             turret.ShowTrajectory();
 
         }
+    }
+
+
+    private bool CalculateAngle(float speed, out float angle)
+    {
+
+        speed = debugSpeed;
+
+        float height = pointer.transform.position.y - turret.transform.position.y;
+
+        float distance = Vector2.Distance(new Vector2(turret.transform.position.x, turret.transform.position.z), new Vector2(pointer.transform.position.x, pointer.transform.position.z));
+
+        float g = Physics.gravity.magnitude;
+        float v2 = speed * speed;
+ 
+
+    
+        float sqrt = v2 * v2 - g * (g * distance * distance + 2 * height * v2);
+
+        if (sqrt < 0)
+        {
+            angle = 0;
+            return false;
+        }
+ 
+        float tempAngle = Mathf.Atan(v2 + Mathf.Sqrt(sqrt) / (g * distance)) * Mathf.Rad2Deg;
+
+       // tempAngle = 90 + tempAngle;
+
+        angle = -tempAngle;
+
+        //Debug.Log("angle " + angle);
+
+        return true;
     }
 }
