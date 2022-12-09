@@ -61,31 +61,39 @@ public class MouseTarget : MonoBehaviour
 
     private bool CalculateAngle(float speed, out float angle)
     {
-        //speed *= Time.fixedDeltaTime;
+        speed *= Time.fixedDeltaTime;
         float height = pointer.transform.position.y - turret.transform.position.y;
 
         float distance = Vector2.Distance(new Vector2(turret.transform.position.x, turret.transform.position.z), new Vector2(pointer.transform.position.x, pointer.transform.position.z));
 
         float g = Physics.gravity.magnitude;
+
+
         float v2 = speed * speed;
- 
-    
+   
         float sqrt = v2 * v2 - g * (g * distance * distance + 2 * height * v2);
 
+        while (sqrt < 0)
+        {
+            speed += 0.001f;
+            v2 = speed * speed;
+            sqrt = v2 * v2 - g * (g * distance * distance + 2 * height * v2);
+        }
+
+     
         if (sqrt < 0)
         {
             angle = 0;
-            label.text = "distance " + distance + " speed " + speed;
             return false;
         }
- 
-        float tempAngle = Mathf.Atan(v2 + Mathf.Sqrt(sqrt) / (g * distance)) * Mathf.Rad2Deg;
 
-       // tempAngle = 90 + tempAngle;
+        float up = v2 + Mathf.Sqrt(sqrt);
+        float down = (g * distance);
+
+
+        float tempAngle = Mathf.Atan(up / down) * Mathf.Rad2Deg;
 
         angle = -tempAngle;
-
-        label.text = "distance " + distance + " speed " + speed + " angle " + tempAngle;
 
         return true;
     }

@@ -237,7 +237,7 @@ MonoBehaviour:
   speedBust: 30
   explosive: 1
   projectilePrefab: {fileID: 4551602810842340014, guid: 3028c9b9d1acf0343a7518e8ac8e5ad3, type: 3}
-  timer: 5
+  timer: 10
   projection: {fileID: 73310625}
   button: {fileID: 573648109}
 --- !u!114 &73310624
