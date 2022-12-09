@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using TMPro;
 public class MouseTarget : MonoBehaviour
 {
 
@@ -12,7 +12,7 @@ public class MouseTarget : MonoBehaviour
 
     [SerializeField] Turret turret;
 
-    [SerializeField] float debugSpeed = 20;
+    [SerializeField] TextMeshProUGUI label;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +42,7 @@ public class MouseTarget : MonoBehaviour
 
             Vector3 lookPos = new Vector3(pointer.transform.position.x, turret.transform.position.y, pointer.transform.position.z);
 
-           // turret.gameObject.transform.LookAt(lookPos);
+           turret.gameObject.transform.LookAt(lookPos);
 
             float angle;
             if (CalculateAngle(turret.CurrSpeed, out angle))
@@ -61,9 +61,7 @@ public class MouseTarget : MonoBehaviour
 
     private bool CalculateAngle(float speed, out float angle)
     {
-
-        speed = debugSpeed;
-
+        //speed *= Time.fixedDeltaTime;
         float height = pointer.transform.position.y - turret.transform.position.y;
 
         float distance = Vector2.Distance(new Vector2(turret.transform.position.x, turret.transform.position.z), new Vector2(pointer.transform.position.x, pointer.transform.position.z));
@@ -71,13 +69,13 @@ public class MouseTarget : MonoBehaviour
         float g = Physics.gravity.magnitude;
         float v2 = speed * speed;
  
-
     
         float sqrt = v2 * v2 - g * (g * distance * distance + 2 * height * v2);
 
         if (sqrt < 0)
         {
             angle = 0;
+            label.text = "distance " + distance + " speed " + speed;
             return false;
         }
  
@@ -87,7 +85,7 @@ public class MouseTarget : MonoBehaviour
 
         angle = -tempAngle;
 
-        //Debug.Log("angle " + angle);
+        label.text = "distance " + distance + " speed " + speed + " angle " + tempAngle;
 
         return true;
     }

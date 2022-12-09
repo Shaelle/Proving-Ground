@@ -23,7 +23,7 @@ public class Turret : MonoBehaviour
     [SerializeField] bool explosive = false;
 
     float currSpeed = 0;
-    public float CurrSpeed => currSpeed * Time.deltaTime;
+    public float CurrSpeed => currSpeed;
 
     [SerializeField] Projectile projectilePrefab;
 
