@@ -12,8 +12,6 @@ public class MouseTarget : MonoBehaviour
 
     [SerializeField] Turret turret;
 
-    [SerializeField] TextMeshProUGUI label;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -42,11 +40,12 @@ public class MouseTarget : MonoBehaviour
 
             Vector3 lookPos = new Vector3(pointer.transform.position.x, turret.transform.position.y, pointer.transform.position.z);
 
-           turret.gameObject.transform.LookAt(lookPos);
+           
 
             float angle;
             if (CalculateAngle(turret.CurrSpeed, out angle))
             {
+                turret.gameObject.transform.LookAt(lookPos);
                 pointer.SetTarget(true);
                 turret.gameObject.transform.Rotate(angle, 0, 0);
             }
@@ -72,13 +71,6 @@ public class MouseTarget : MonoBehaviour
         float v2 = speed * speed;
    
         float sqrt = v2 * v2 - g * (g * distance * distance + 2 * height * v2);
-
-        while (sqrt < 0)
-        {
-            speed += 0.001f;
-            v2 = speed * speed;
-            sqrt = v2 * v2 - g * (g * distance * distance + 2 * height * v2);
-        }
 
      
         if (sqrt < 0)

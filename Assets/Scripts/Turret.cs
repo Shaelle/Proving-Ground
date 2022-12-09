@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public class Turret : MonoBehaviour
@@ -119,7 +120,7 @@ public class Turret : MonoBehaviour
     public void Fire(InputAction.CallbackContext context)
     {
 
-  
+        
 
         if (context.phase == InputActionPhase.Started)
         {
@@ -127,7 +128,7 @@ public class Turret : MonoBehaviour
          //   isPowering = true;
           
         }
-        else if (context.phase == InputActionPhase.Canceled)
+        else if (context.phase == InputActionPhase.Canceled && !EventSystem.current.IsPointerOverGameObject())
         {           
             Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
             projectile.Init(currSpeed, timer, explosive);
