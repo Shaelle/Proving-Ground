@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
+using System;
+
+
+
 public class MouseTarget : MonoBehaviour
 {
 
@@ -10,19 +13,27 @@ public class MouseTarget : MonoBehaviour
 
     TargetPointer pointer;
 
-    [SerializeField] Turret turret;
+    Vector3 turret;
+    float turretSpeed;
 
-    // Start is called before the first frame update
-    void Start()
+    public static Action<Vector3, float> OnCanHit;
+    public static Action OnOutOfRange;
+
+    private void OnEnable()
     {
-        
+        Turret.OnChangingPosition += SetPos;
+        Turret.OnChangingSpeed += SetSpeed;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        Turret.OnChangingPosition -= SetPos;
+        Turret.OnChangingSpeed -= SetSpeed;
     }
+
+    private void SetPos(Vector3 pos) => turret = pos;
+    private void SetSpeed(float speed) => turretSpeed = speed;
+
 
     public void MouseMove(InputAction.CallbackContext context)
     {
@@ -38,21 +49,13 @@ public class MouseTarget : MonoBehaviour
   
             pointer.transform.position = mouseHit.point;
 
-            Vector3 lookPos = new Vector3(pointer.transform.position.x, turret.transform.position.y, pointer.transform.position.z);
+            Vector3 lookPos = new Vector3(pointer.transform.position.x, turret.y, pointer.transform.position.z);
 
            
-
             float angle;
-            if (CalculateAngle(turret.CurrSpeed, out angle))
-            {
-                turret.gameObject.transform.LookAt(lookPos);
-                pointer.SetTarget(true);
-                turret.gameObject.transform.Rotate(angle, 0, 0);
-            }
-            else pointer.SetTarget(false);
+            if (CalculateAngle(turretSpeed, out angle)) OnCanHit?.Invoke(lookPos, angle);
+            else OnOutOfRange?.Invoke();
 
-
-            turret.ShowTrajectory();
 
         }
     }
@@ -61,9 +64,9 @@ public class MouseTarget : MonoBehaviour
     private bool CalculateAngle(float speed, out float angle)
     {
         speed *= Time.fixedDeltaTime;
-        float height = pointer.transform.position.y - turret.transform.position.y;
+        float height = pointer.transform.position.y - turret.y;
 
-        float distance = Vector2.Distance(new Vector2(turret.transform.position.x, turret.transform.position.z), new Vector2(pointer.transform.position.x, pointer.transform.position.z));
+        float distance = Vector2.Distance(new Vector2(turret.x, turret.z), new Vector2(pointer.transform.position.x, pointer.transform.position.z));
 
         float g = Physics.gravity.magnitude;
 

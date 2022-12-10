@@ -11,17 +11,19 @@ public class Projection : MonoBehaviour
 
     [SerializeField] Transform obstacles;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        CreatePhysicsScene();
-    }
+    [SerializeField] LineRenderer line;
+    [SerializeField] int maxPhysicsFrameIterations = 100;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+    // Start is called before the first frame update
+    void Start() => CreatePhysicsScene();
+
+
+    private void OnEnable() => MouseTarget.OnOutOfRange += HideLine;
+    private void OnDisable() => MouseTarget.OnOutOfRange -= HideLine;
+
+    private void HideLine() => line.enabled = false;
+
 
     void CreatePhysicsScene()
     {
@@ -38,11 +40,10 @@ public class Projection : MonoBehaviour
     }
 
 
-    [SerializeField] LineRenderer line;
-    [SerializeField] int maxPhysicsFrameIterations = 100;
-
     public void SimulateTrajectory(Projectile projectilePrefab, Transform pos, float speed, float time, bool explosive)
     {
+
+        if (line.enabled == false) line.enabled = true;
 
         bool isDestroyed = false;
         void OnDestroy() => isDestroyed = true;
@@ -70,5 +71,5 @@ public class Projection : MonoBehaviour
         Destroy(ghostObj.gameObject);
     }
 
-
+ 
 }

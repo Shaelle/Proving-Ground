@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 
 public class Turret : MonoBehaviour
@@ -18,26 +19,30 @@ public class Turret : MonoBehaviour
 
     [Header("Projectile")]
     [SerializeField] float speed = 30;
-    [SerializeField] float maxSpeed = 1000;
-    [SerializeField] float speedBust = 10;
-
     [SerializeField] bool explosive = false;
-
-    float currSpeed = 0;
-    public float CurrSpeed => currSpeed;
 
     [SerializeField] Projectile projectilePrefab;
 
     [SerializeField, Min(1)] float timer = 5;
 
+    [Header("Projection")]
+
     [SerializeField] Projection projection;
+
+    [Header("UI")]
 
     [SerializeField] Toggle button;
 
 
+    public static Action<Vector3> OnChangingPosition;
+    public static Action<float> OnChangingSpeed;
+
+
     Vector2 movement;
     bool isMoving = false;
-    bool isPowering = false;
+
+    bool canHit = true;
+    bool isGUI = false;
 
     float rotationX = 0;
 
@@ -46,18 +51,38 @@ public class Turret : MonoBehaviour
     void Start()
     {
         button.isOn = explosive;
-        currSpeed = speed;
+
+        OnChangingPosition?.Invoke(transform.position);
+        OnChangingSpeed?.Invoke(speed);
+
     }
 
 
-    private void OnEnable() => button.onValueChanged.AddListener(ToggleExplosive);
+    private void OnEnable()
+    {
+        button.onValueChanged.AddListener(ToggleExplosive);
 
-    private void OnDisable() => button.onValueChanged.RemoveListener(ToggleExplosive);
+        MouseTarget.OnCanHit += CanHit;
+        MouseTarget.OnOutOfRange += OutOfRange;
+    }
+
+    private void OnDisable()
+    {
+        button.onValueChanged.RemoveListener(ToggleExplosive);
+
+        MouseTarget.OnCanHit -= CanHit;
+        MouseTarget.OnOutOfRange -= OutOfRange;
+    }
 
 
     // Update is called once per frame
     void Update()
     {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            isGUI = EventSystem.current.IsPointerOverGameObject();
+        }
+
         if (isMoving)
         {
 
@@ -72,82 +97,46 @@ public class Turret : MonoBehaviour
             ShowTrajectory();
           
         }
-
-        if (isPowering)
-        {
-            currSpeed += speedBust;
-            ShowTrajectory();
-        }
     }
 
 
-    public void ShowTrajectory()
-    {
-        projection.SimulateTrajectory(projectilePrefab, transform, currSpeed, timer, explosive);
-    }
-
+    public void ShowTrajectory() => projection.SimulateTrajectory(projectilePrefab, transform, speed, timer, explosive);
 
     public void Move(InputAction.CallbackContext context)
     {
 
-        switch (context.phase)
-        {
-            case InputActionPhase.Disabled:
-                break;
-
-            case InputActionPhase.Waiting:
-                break;
-
-            case InputActionPhase.Started:
-                isMoving = true;
-                break;
-            case InputActionPhase.Performed:
-                movement = context.ReadValue<Vector2>();
-                break;
-
-            case InputActionPhase.Canceled:
-                isMoving = false;
-                break;
-
-            default:
-                isMoving = false;
-                break;
-        }
-
-
+        if (context.phase == InputActionPhase.Started) isMoving = true;
+        else if (context.phase == InputActionPhase.Performed) movement = context.ReadValue<Vector2>();
+        else isMoving = false;
     }
+
 
     public void Fire(InputAction.CallbackContext context)
     {
 
-        
-
-        if (context.phase == InputActionPhase.Started)
-        {
-         //   currSpeed = speed;
-         //   isPowering = true;
-          
-        }
-        else if (context.phase == InputActionPhase.Canceled && !EventSystem.current.IsPointerOverGameObject())
+        if (canHit && context.phase == InputActionPhase.Canceled && !isGUI)
         {           
             Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
-            projectile.Init(currSpeed, timer, explosive);
-
-            isPowering = false;
-
-           // Debug.Log("Fire. New speed " + currSpeed);
-
-            currSpeed = speed;
-
+            projectile.Init(speed, timer, explosive);
             
         }
     }
 
 
-    private void ToggleExplosive(bool value)
+    private void ToggleExplosive(bool value) => explosive = value;
+
+
+    private void CanHit(Vector3 lookPos, float angle)
     {
-        explosive = value;
+        gameObject.transform.LookAt(lookPos);
+        gameObject.transform.Rotate(angle, 0, 0);
+
+        ShowTrajectory();
+
+        canHit = true;
     }
+
+    private void OutOfRange() => canHit = false;
 
 
 }

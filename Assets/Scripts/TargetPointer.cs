@@ -7,22 +7,21 @@ public class TargetPointer : MonoBehaviour
 
     [SerializeField] GameObject target;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+        MouseTarget.OnCanHit += CanHit;
+        MouseTarget.OnOutOfRange += OutOfReach;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        MouseTarget.OnCanHit -= CanHit;
+        MouseTarget.OnOutOfRange -= OutOfReach;
     }
 
-    public void SetTarget(bool isAvialable)
-    {
-        target.SetActive(isAvialable);
-    }
+    private void CanHit(Vector3 pos, float angle) => target.SetActive(true);
+
+    private void OutOfReach() => target.SetActive(false);
 
 
 }
