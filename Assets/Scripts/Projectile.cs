@@ -39,10 +39,17 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        
         if (isExplosive)
         {
             if (explosion != null && !isSimulating) Instantiate(explosion, transform.position, Quaternion.identity);
             Kill();
+        }
+
+        if (!isSimulating)
+        {
+            if (isExplosive) AudioVX.instance.PlayBoom();
+            else AudioVX.instance.PlayHit();
         }
     }
 

@@ -137,6 +137,7 @@ public class Turret : MonoBehaviour
         {           
             Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
             projectile.Init(speed, timer, explosive);
+            AudioVX.instance.PlayShoot(!explosive);
             
         }
     }
