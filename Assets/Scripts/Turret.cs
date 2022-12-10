@@ -18,7 +18,11 @@ public class Turret : MonoBehaviour
     [SerializeField] float maxVert = 45;
 
     [Header("Projectile")]
-    [SerializeField] float speed = 30;
+    [SerializeField, Min(1)] float speed = 30;
+    [SerializeField, Min(1)] float minSpeed = 10;
+    [SerializeField, Min(1)] float maxSpeed = 1000;
+
+
     [SerializeField] bool explosive = false;
 
     [SerializeField] Projectile projectilePrefab;
@@ -32,6 +36,7 @@ public class Turret : MonoBehaviour
     [Header("UI")]
 
     [SerializeField] Toggle button;
+    [SerializeField] Slider slider;
 
 
     public static Action<Vector3> OnChangingPosition;
@@ -52,16 +57,30 @@ public class Turret : MonoBehaviour
     {
         button.isOn = explosive;
 
+        slider.minValue = minSpeed;
+        slider.maxValue = maxSpeed;
+        slider.value = speed;
+
+        slider.onValueChanged.AddListener(ChangeSpeed);
+
         OnChangingPosition?.Invoke(transform.position);
         OnChangingSpeed?.Invoke(speed);
 
     }
 
+    private void OnDestroy() => slider.onValueChanged.RemoveListener(ChangeSpeed);
+
+
+    private void ChangeSpeed(float speed)
+    {
+        this.speed = speed;
+        OnChangingSpeed?.Invoke(speed);
+    }
 
     private void OnEnable()
     {
         button.onValueChanged.AddListener(ToggleExplosive);
-
+        
         MouseTarget.OnCanHit += CanHit;
         MouseTarget.OnOutOfRange += OutOfRange;
     }
@@ -69,7 +88,7 @@ public class Turret : MonoBehaviour
     private void OnDisable()
     {
         button.onValueChanged.RemoveListener(ToggleExplosive);
-
+        
         MouseTarget.OnCanHit -= CanHit;
         MouseTarget.OnOutOfRange -= OutOfRange;
     }
