@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -304,16 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdb4450e179f5548a90d13435dea5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivityHor: 150
-  sensitivityVert: 70
-  minVert: -80
-  maxVert: 20
-  speed: 400
-  minSpeed: 100
-  maxSpeed: 800
-  explosive: 1
-  projectilePrefab: {fileID: 4551602810842340014, guid: 3028c9b9d1acf0343a7518e8ac8e5ad3, type: 3}
-  timer: 10
+  turretSettings: {fileID: 11400000, guid: 4fcdd457128a0a840b1ad60be23a8919, type: 2}
+  projectileSettings: {fileID: 11400000, guid: f1d83c3c9a017fb4bbd3e35e6f37e8a4, type: 2}
   projection: {fileID: 73310625}
   button: {fileID: 573648109}
   slider: {fileID: 1884419631}
@@ -456,6 +448,7 @@ MonoBehaviour:
   maxPhysicsFrameIterations: 500
 --- !u!120 &73310626
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -541,16 +534,20 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 3
       m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
     textureMode: 3
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 0
 --- !u!1 &114150559
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,6 +629,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 73310622}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7eca69ae313cda44387f1dcdb09c6ef0, type: 3}
@@ -683,6 +681,9 @@ PrefabInstance:
       value: Cannon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7eca69ae313cda44387f1dcdb09c6ef0, type: 3}
 --- !u!1 &502175757
 GameObject:
@@ -1150,9 +1151,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714066524}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -1473,9 +1482,17 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -1544,9 +1561,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088300241}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1088300243
@@ -1950,8 +1975,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1515036653}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
@@ -2033,9 +2067,17 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1522534258}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1522534260
@@ -2243,8 +2285,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821947825}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
@@ -2610,6 +2661,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

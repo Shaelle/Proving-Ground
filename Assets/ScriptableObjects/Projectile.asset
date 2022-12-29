@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10dbf7917dc00d34aafb1fda3b286255, type: 3}
+  m_Name: Projectile
+  m_EditorClassIdentifier: 
+  speed: 400
+  minSpeed: 100
+  maxSpeed: 800
+  explosive: 1
+  projectilePrefab: {fileID: 4551602810842340014, guid: 3028c9b9d1acf0343a7518e8ac8e5ad3, type: 3}
+  timer: 10

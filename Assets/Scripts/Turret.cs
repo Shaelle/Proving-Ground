@@ -10,24 +10,12 @@ using System;
 public class Turret : MonoBehaviour
 {
 
-    [Header("Turrert")]
-    [SerializeField] float sensitivityHor = 9;
-    [SerializeField] float sensitivityVert = 9;
+    [SerializeField] TurretSettings turretSettings;
 
-    [SerializeField] float minVert = -45;
-    [SerializeField] float maxVert = 45;
+    [SerializeField] ProjectileSettings projectileSettings;
 
-    [Header("Projectile")]
-    [SerializeField, Min(1)] float speed = 30;
-    [SerializeField, Min(1)] float minSpeed = 10;
-    [SerializeField, Min(1)] float maxSpeed = 1000;
-
-
-    [SerializeField] bool explosive = false;
-
-    [SerializeField] Projectile projectilePrefab;
-
-    [SerializeField, Min(1)] float timer = 5;
+    float speed = 30;
+    bool explosive = false;
 
     [Header("Projection")]
 
@@ -55,10 +43,14 @@ public class Turret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        speed = projectileSettings.Speed;
+        explosive = projectileSettings.Explosive;
+
+
         button.isOn = explosive;
 
-        slider.minValue = minSpeed;
-        slider.maxValue = maxSpeed;
+        slider.minValue = projectileSettings.MinSpeed;
+        slider.maxValue = projectileSettings.MaxSpeed;
         slider.value = speed;
 
         slider.onValueChanged.AddListener(ChangeSpeed);
@@ -105,10 +97,10 @@ public class Turret : MonoBehaviour
         if (isMoving)
         {
 
-            rotationX -= movement.y * sensitivityVert * Time.deltaTime;
-            rotationX = Mathf.Clamp(rotationX, minVert, maxVert);
+            rotationX -= movement.y * turretSettings.SensitivityVert * Time.deltaTime;
+            rotationX = Mathf.Clamp(rotationX, turretSettings.MinVert, turretSettings.MaxVert);
 
-            float delta = movement.x * sensitivityHor * Time.deltaTime;
+            float delta = movement.x * turretSettings.SensitivityHor * Time.deltaTime;
             float rotationY = transform.localEulerAngles.y + delta;
 
             transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
@@ -119,7 +111,7 @@ public class Turret : MonoBehaviour
     }
 
 
-    public void ShowTrajectory() => projection.SimulateTrajectory(projectilePrefab, transform, speed, timer, explosive);
+    public void ShowTrajectory() => projection.SimulateTrajectory(projectileSettings.ProjectilePrefab, transform, speed, projectileSettings.Timer, explosive);
 
     public void Move(InputAction.CallbackContext context)
     {
@@ -135,8 +127,8 @@ public class Turret : MonoBehaviour
 
         if (canHit && context.phase == InputActionPhase.Canceled && !isGUI)
         {           
-            Projectile projectile = Instantiate(projectilePrefab, transform.position,transform.rotation);
-            projectile.Init(speed, timer, explosive);
+            Projectile projectile = Instantiate(projectileSettings.ProjectilePrefab, transform.position,transform.rotation);
+            projectile.Init(speed, projectileSettings.Timer, explosive);
             AudioVX.instance.PlayShoot(!explosive);
             
         }
