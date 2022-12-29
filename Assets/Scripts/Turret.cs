@@ -17,14 +17,7 @@ public class Turret : MonoBehaviour
     float speed = 30;
     bool explosive = false;
 
-    [Header("Projection")]
-
     [SerializeField] Projection projection;
-
-    [Header("UI")]
-
-    [SerializeField] Toggle button;
-    [SerializeField] Slider slider;
 
 
     public static Action<Vector3> OnChangingPosition;
@@ -46,21 +39,15 @@ public class Turret : MonoBehaviour
         speed = projectileSettings.Speed;
         explosive = projectileSettings.Explosive;
 
+        TurretUI.OnChangingSpeed += ChangeSpeed;
 
-        button.isOn = explosive;
-
-        slider.minValue = projectileSettings.MinSpeed;
-        slider.maxValue = projectileSettings.MaxSpeed;
-        slider.value = speed;
-
-        slider.onValueChanged.AddListener(ChangeSpeed);
 
         OnChangingPosition?.Invoke(transform.position);
         OnChangingSpeed?.Invoke(speed);
 
     }
 
-    private void OnDestroy() => slider.onValueChanged.RemoveListener(ChangeSpeed);
+    private void OnDestroy() => TurretUI.OnChangingSpeed -= ChangeSpeed;
 
 
     private void ChangeSpeed(float speed)
@@ -71,7 +58,7 @@ public class Turret : MonoBehaviour
 
     private void OnEnable()
     {
-        button.onValueChanged.AddListener(ToggleExplosive);
+        TurretUI.OnTogglingExplosive += ToggleExplosive;
         
         MouseTarget.OnCanHit += CanHit;
         MouseTarget.OnOutOfRange += OutOfRange;
@@ -79,7 +66,7 @@ public class Turret : MonoBehaviour
 
     private void OnDisable()
     {
-        button.onValueChanged.RemoveListener(ToggleExplosive);
+        TurretUI.OnTogglingExplosive -= ToggleExplosive;
         
         MouseTarget.OnCanHit -= CanHit;
         MouseTarget.OnOutOfRange -= OutOfRange;
