@@ -12,8 +12,8 @@ public class TurretUI : MonoBehaviour
 
     [SerializeField] ProjectileSettings projectile;
 
-    public static Action<float> OnChangingSpeed;
-    public static Action<bool> OnTogglingExplosive;
+    public static event Action<float> OnChangingSpeed;
+    public static event Action<bool> OnTogglingExplosive;
 
     // Start is called before the first frame update
     void Start()

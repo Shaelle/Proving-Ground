@@ -16,8 +16,8 @@ public class MouseTarget : MonoBehaviour
     Vector3 turret;
     float turretSpeed;
 
-    public static Action<Vector3, float> OnCanHit;
-    public static Action OnOutOfRange;
+    public static event Action<Vector3, float> OnCanHit;
+    public static event Action OnOutOfRange;
 
     private void OnEnable()
     {

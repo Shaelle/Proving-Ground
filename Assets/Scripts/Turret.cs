@@ -20,8 +20,8 @@ public class Turret : MonoBehaviour
     [SerializeField] Projection projection;
 
 
-    public static Action<Vector3> OnChangingPosition;
-    public static Action<float> OnChangingSpeed;
+    public static event Action<Vector3> OnChangingPosition;
+    public static event Action<float> OnChangingSpeed;
 
 
     Vector2 movement;
