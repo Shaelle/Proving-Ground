@@ -8,37 +8,34 @@ using DG.Tweening;
 public class Looking : MonoBehaviour
 {
 
-    [SerializeField] Transform target;
+    [SerializeField] Transform targetPointer;
     [SerializeField] Rig rig;
     [SerializeField] Animator animator;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        rig.weight = 0;
-    }
+    void Start() => rig.weight = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            LookingAnim();
-        }
-    }
+    private void OnEnable() => GazeTarget.OnLooking += SelectTarget;
+    private void OnDisable() => GazeTarget.OnLooking -= SelectTarget;
 
 
     void LookingAnim()
-    {
-        
+    {        
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 1, 0.5f));
-        sequence.AppendInterval(0.2f);
-        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 0, 0.5f)).OnComplete(() => animator.SetTrigger("Victory"));
+        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 1, 0.7f).SetEase(Ease.OutCubic));
+        sequence.AppendInterval(0.1f);
+        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 0, 0.5f).SetEase(Ease.OutCubic)).OnComplete(() => animator.SetTrigger("Victory"));
 
         sequence.Play();
+    }
 
+
+    void SelectTarget(Transform target)
+    {
+        targetPointer.position = new Vector3(target.position.x, target.position.y, target.position.z);
+
+        LookingAnim();
     }
 
 }
