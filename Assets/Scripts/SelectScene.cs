@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor;
 
 
 [RequireComponent(typeof(Button))]
@@ -12,7 +11,7 @@ public class SelectScene : MonoBehaviour
 {
     Button button;
 
-    [SerializeField] SceneAsset scene;
+    [SerializeField] string scene;
 
     private void Awake()
     {
@@ -20,7 +19,7 @@ public class SelectScene : MonoBehaviour
 
 
         TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
-        label.text = scene.name;
+        label.text = scene;
     }
 
     private void OnEnable() => button.onClick.AddListener(Click);
@@ -28,7 +27,7 @@ public class SelectScene : MonoBehaviour
     private void OnDisable() => button.onClick.RemoveListener(Click);
 
 
-    void Click() => SceneManager.LoadScene(scene.name);
+    void Click() => SceneManager.LoadScene(scene);
 
 
 
