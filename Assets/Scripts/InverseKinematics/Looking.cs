@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Animations.Rigging;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class Looking : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class Looking : MonoBehaviour
     [SerializeField] Transform targetPointer;
     [SerializeField] Rig rig;
     [SerializeField] Animator animator;
+
+    public UnityEvent onTurning;
+    public UnityEvent onFinished;
 
     // Start is called before the first frame update
     void Start() => rig.weight = 0;
@@ -20,7 +24,10 @@ public class Looking : MonoBehaviour
 
 
     void LookingAnim()
-    {        
+    {
+
+        onTurning.Invoke();
+
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 1, 0.7f).SetEase(Ease.OutCubic));
@@ -37,5 +44,8 @@ public class Looking : MonoBehaviour
 
         LookingAnim();
     }
+
+
+    public void VictoryEvent() => onFinished.Invoke();
 
 }
