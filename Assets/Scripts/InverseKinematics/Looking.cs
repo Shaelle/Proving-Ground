@@ -30,9 +30,9 @@ public class Looking : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 1, 0.7f).SetEase(Ease.OutCubic));
-        sequence.AppendInterval(0.1f);
-        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 0, 0.5f).SetEase(Ease.OutCubic)).OnComplete(() => animator.SetTrigger("Victory"));
+        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 1, 0.5f).SetEase(Ease.InOutQuad));
+        sequence.AppendInterval(0.05f);
+        sequence.Append(DOTween.To(() => rig.weight, x => rig.weight = x, 0, 0.4f).SetEase(Ease.InOutQuad)).OnComplete(() => animator.SetTrigger("Victory"));
 
         sequence.Play();
     }
