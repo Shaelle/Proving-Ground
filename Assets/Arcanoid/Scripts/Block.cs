@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Block : MonoBehaviour
 {
+
+    public static event Action OnBlockDestroyed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +23,9 @@ public class Block : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
+
+        OnBlockDestroyed?.Invoke();
+
         Destroy(this.gameObject);
     }
 }

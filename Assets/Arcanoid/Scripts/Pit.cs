@@ -8,6 +8,8 @@ public class Pit : MonoBehaviour
 
     public UnityEvent<bool> OnFail;
 
+    public UnityEvent OnRestart;
+
     GameObject lastObject;
 
     private void OnTriggerEnter(Collider other)
@@ -30,6 +32,8 @@ public class Pit : MonoBehaviour
         {
             lastObject.GetComponent<Ball>().ResetBall();
             OnFail.Invoke(false);
+
+            OnRestart.Invoke();
         }
     }
 }

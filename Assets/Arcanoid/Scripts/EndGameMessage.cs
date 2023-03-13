@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
-public class GameOver : MonoBehaviour
+public class EndGameMessage : MonoBehaviour
 {
 
     TextMeshProUGUI label;
@@ -16,6 +16,6 @@ public class GameOver : MonoBehaviour
     }
 
 
-    public void ShowGameOver(bool isShown) => label.gameObject.SetActive(isShown);
+    public void ShowMessage(bool isShown) => label.gameObject.SetActive(isShown);
 
 }

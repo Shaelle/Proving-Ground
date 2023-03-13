@@ -8,6 +8,8 @@ public class Ball : MonoBehaviour
 
     Vector3 defaultPos;
 
+    [SerializeField, Min(1)] float speed = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +29,15 @@ public class Ball : MonoBehaviour
 
             body.isKinematic = false;
 
-            body.AddForce(new Vector3(Random.Range(-8, 8), 4));
+            Vector3 initForce = new Vector3(Random.Range(-8, 8), 4).normalized;
+
+            body.velocity = (initForce * speed);
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!body.isKinematic) body.velocity = (Vector3.Normalize(body.velocity) * speed);
     }
 
 
@@ -43,6 +52,11 @@ public class Ball : MonoBehaviour
         gameObject.SetActive(true);
 
         FireBall();
+    }
+
+    public void StopBall()
+    {
+        body.isKinematic = true;
     }
 
 }

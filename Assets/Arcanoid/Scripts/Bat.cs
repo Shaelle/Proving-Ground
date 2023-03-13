@@ -62,8 +62,7 @@ public class Bat : MonoBehaviour
 
         if (body != null)
         {
-
-        //    body.AddForce(Vector3.up * 50);
+          //  body.velocity *= 1.05f;
         }
     }
 
