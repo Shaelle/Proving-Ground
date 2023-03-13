@@ -1308,33 +1308,6 @@ MonoBehaviour:
   input: {fileID: 1602332684}
   sensitivity: 10
   drag: 5
-  OnFire:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 355867535}
-        m_TargetAssemblyTypeName: Ball, Assembly-CSharp
-        m_MethodName: FireBall
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1830668769}
-        m_TargetAssemblyTypeName: Pit, Assembly-CSharp
-        m_MethodName: RestartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!54 &1156572919
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1727,6 +1700,7 @@ GameObject:
   - component: {fileID: 1602332685}
   - component: {fileID: 1602332684}
   - component: {fileID: 1602332686}
+  - component: {fileID: 1602332687}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1801,6 +1775,111 @@ MonoBehaviour:
   OnFinish:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1602332687}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: Win
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1602332687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602332683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b270a558ce89953418082723d22ae3ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnRestart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1602332686}
+        m_TargetAssemblyTypeName: LevelCreator, Assembly-CSharp
+        m_MethodName: GenerateLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 355867535}
+        m_TargetAssemblyTypeName: Ball, Assembly-CSharp
+        m_MethodName: ResetBall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 781144944}
+        m_TargetAssemblyTypeName: EndGameMessage, Assembly-CSharp
+        m_MethodName: ShowMessage
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1291338997}
+        m_TargetAssemblyTypeName: EndGameMessage, Assembly-CSharp
+        m_MethodName: ShowMessage
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnBeginPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 355867535}
+        m_TargetAssemblyTypeName: Ball, Assembly-CSharp
+        m_MethodName: FireBall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnWin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 355867535}
+        m_TargetAssemblyTypeName: Ball, Assembly-CSharp
+        m_MethodName: StopBall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1291338997}
         m_TargetAssemblyTypeName: EndGameMessage, Assembly-CSharp
         m_MethodName: ShowMessage
@@ -1813,10 +1892,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  OnLose:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 355867535}
         m_TargetAssemblyTypeName: Ball, Assembly-CSharp
         m_MethodName: StopBall
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 781144944}
+        m_TargetAssemblyTypeName: EndGameMessage, Assembly-CSharp
+        m_MethodName: ShowMessage
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1894,37 +1988,10 @@ MonoBehaviour:
   OnFail:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 781144944}
-        m_TargetAssemblyTypeName: EndGameMessage, Assembly-CSharp
-        m_MethodName: ShowMessage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRestart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1602332686}
-        m_TargetAssemblyTypeName: LevelCreator, Assembly-CSharp
-        m_MethodName: GenerateLevel
+      - m_Target: {fileID: 1602332687}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: Lose
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1291338997}
-        m_TargetAssemblyTypeName: EndGameMessage, Assembly-CSharp
-        m_MethodName: ShowMessage
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

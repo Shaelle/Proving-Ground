@@ -50,10 +50,8 @@ public class LevelCreator : MonoBehaviour
 
         for (int i = blocks.Count - 1; i >= 0; i--)
         {
-           if (blocks[i].gameObject != null) Destroy(blocks[i].gameObject);
+           if (blocks[i] != null) Destroy(blocks[i].gameObject);
         }
-
-
 
         blocks.Clear();
 
