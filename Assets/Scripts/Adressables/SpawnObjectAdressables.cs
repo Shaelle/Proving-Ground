@@ -4,10 +4,25 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 
+
+[System.Serializable]
+public class CustomAssetReference : AssetReferenceT<Block>
+{
+    public CustomAssetReference(string guid) : base(guid)
+    {
+    }
+}
+
+
+
 public class SpawnObjectAdressables : MonoBehaviour
 {
 
     [SerializeField] AssetReferenceGameObject prefab;
+
+    [SerializeField] AssetReferenceSprite sprite;
+
+    [SerializeField] CustomAssetReference block;
 
     List<GameObject> spawnedObjects = new List<GameObject>();
 
