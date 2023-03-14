@@ -127,3 +127,4 @@ MonoBehaviour:
   - {r: 0.5938057, g: 0.6174635, b: 0.9056604, a: 1}
   - {r: 0.6638227, g: 0.9150943, b: 0.5481933, a: 1}
   debrisParticles: {fileID: 6827618303973684898, guid: fc95e49096b92ef4a8a87af3689bbba9, type: 3}
+  breakSound: {fileID: 8300000, guid: 9930d5b4be15bb04c9d0a6fa0d7e6b2e, type: 3}

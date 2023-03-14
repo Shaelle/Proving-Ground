@@ -10,6 +10,8 @@ public class Ball : MonoBehaviour
 
     [SerializeField, Min(1)] float speed = 10;
 
+    [SerializeField] AudioClip hitSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,12 @@ public class Ball : MonoBehaviour
 
             body.velocity = (initForce * speed);
         }
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        AudioFX.instance.Play(hitSound);
     }
 
     private void LateUpdate()

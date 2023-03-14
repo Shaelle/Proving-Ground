@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bat : MonoBehaviour
@@ -19,13 +20,26 @@ public class Bat : MonoBehaviour
 
     Rigidbody body;
 
+    Vector3 defaultPosition;
+
+    float defaultScale;
+
+    const float sizeStep = 2.5f;
+
+   
+
 
 
     private void Awake() => body = GetComponent<Rigidbody>();
 
     // Start is called before the first frame update
-    void Start() => move = input.currentActionMap.FindAction("Move");
+    void Start()
+    {
+        move = input.currentActionMap.FindAction("Move");
 
+        defaultPosition = transform.position;
+        defaultScale = transform.localScale.x;
+    }
 
     private void OnEnable() => input.onActionTriggered += ReadAction;
 
@@ -46,9 +60,20 @@ public class Bat : MonoBehaviour
 
                 body.drag = 0;
 
+                if (movement.y > 0 && transform.localScale.x >= defaultScale / 1.5f) transform.DOScaleX(transform.localScale.x - sizeStep, 0.5f);
+                else if (movement.y < 0 && transform.localScale.x <= defaultScale * 1.5f) transform.DOScaleX(transform.localScale.x + sizeStep, 0.5f);
+
             }
             else if (context.canceled) body.drag = drag;
         }
+    }
+
+
+    public void ResetBat()
+    {
+        transform.position = defaultPosition;
+
+        transform.localScale = new Vector3(defaultScale, transform.localScale.y, transform.localScale.z);
     }
 
 }

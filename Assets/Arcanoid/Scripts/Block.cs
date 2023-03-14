@@ -31,6 +31,8 @@ public class Block : MonoBehaviour
 
     [SerializeField] ParticleSystem debrisParticles;
 
+    [SerializeField] AudioClip breakSound;
+
     Color color;
 
     int health;
@@ -81,6 +83,9 @@ public class Block : MonoBehaviour
     void DestroyBlock()
     {
         Instantiate(debrisParticles, transform.position, Quaternion.identity);
+
+        AudioFX.instance.Play(breakSound);
+
         Destroy(gameObject);
     }
 }
