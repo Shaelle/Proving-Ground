@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
 
 public class LevelCreator : MonoBehaviour
 {
@@ -85,10 +88,11 @@ public class LevelCreator : MonoBehaviour
     }
 
 
-    public void RemoveBlock()
+    public void RemoveBlock(Block block, Block.OnDestroy destroy)
     {
 
-        if (blocks.Count > 0) blocks.RemoveAt(0);
+        blocks.Remove(block);
+        destroy?.Invoke();
 
         if (blocks.Count == 0) OnFinish.Invoke();
     }

@@ -1,13 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+
+
+[System.Serializable]
+public class AssetReferenceBlock : AssetReferenceT<Block>
+{
+    public AssetReferenceBlock(string guid) : base(guid)
+    {
+    }
+}
+
 
 public class Block : MonoBehaviour
 {
 
-    public static event System.Action OnBlockDestroyed;
+    public static event System.Action<Block, OnDestroy> OnBlockDestroyed;
 
     new MeshRenderer renderer;
+
+    public delegate void OnDestroy();
 
 
     [SerializeField] Material health1;
@@ -15,6 +28,8 @@ public class Block : MonoBehaviour
     [SerializeField] Material health3;
 
     [SerializeField] Color[] pallete;
+
+    [SerializeField] ParticleSystem debrisParticles;
 
     Color color;
 
@@ -40,7 +55,7 @@ public class Block : MonoBehaviour
         else if (health == 2) renderer.material = health2;
         else renderer.material = health1;
 
-        renderer.material.color = new Color(color.r, color.g, color.b);
+        renderer.material.color = new Color(color.r, color.g, color.b, renderer.material.color.a);
     }
 
     // Update is called once per frame
@@ -58,8 +73,14 @@ public class Block : MonoBehaviour
         if (health > 0) UpdateView();
         else
         {
-            OnBlockDestroyed?.Invoke();
-            Destroy(this.gameObject);
+            OnBlockDestroyed?.Invoke(this, DestroyBlock);
         }
+    }
+
+
+    void DestroyBlock()
+    {
+        Instantiate(debrisParticles, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
