@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 355867531}
   - component: {fileID: 355867530}
   - component: {fileID: 355867535}
+  - component: {fileID: 355867536}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -602,6 +603,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 12
   hitSound: {fileID: 8300000, guid: 235cd029049a14f7caaea0a4bea1b829, type: 3}
+  superMaterial: {fileID: 2100000, guid: 17f145d69c5649846b4669a0eddf3338, type: 2}
+  OnFail:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1602332687}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: Lose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  bonusTime: 7
+--- !u!75 &355867536
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355867529}
+  m_Enabled: 1
+  m_Force: {x: 0, y: -0.001, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1001 &447422754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2141,21 +2171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab23a92e14ae14cbbf20a85a598bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnFail:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1602332687}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: Lose
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1838324394
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, IDestructable
 {
     Rigidbody body;
 
@@ -12,6 +13,22 @@ public class Ball : MonoBehaviour
 
     [SerializeField] AudioClip hitSound;
 
+    [SerializeField] Material superMaterial;
+
+
+    public static event System.Action<bool> SuperActivated;
+
+    public UnityEvent OnFail;
+
+    Material defaultMaterial;
+
+    Renderer renderer;
+
+    [SerializeField, Range(1, 30)] int bonusTime = 20;
+    int timer = 0;
+
+    bool isSuper = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +37,55 @@ public class Ball : MonoBehaviour
         body.isKinematic = true;
 
         defaultPos = transform.position;
+
+        renderer = GetComponent<Renderer>();
+
+        defaultMaterial = renderer.material;
+    }
+
+
+    private void OnEnable()
+    {
+        Bonus.OnBonusCollected += CollectBonus;
+    }
+
+    private void OnDisable()
+    {
+        Bonus.OnBonusCollected -= CollectBonus;
+    }
+
+
+    void CollectBonus(Bonus.BonusType type)
+    {
+        if (type == Bonus.BonusType.Superball)
+        {
+            timer = bonusTime;
+            if (!isSuper) StartCoroutine(SuperBall());  
+        }
+    }
+
+
+    IEnumerator SuperBall()
+    {
+
+        isSuper = true; 
+
+        renderer.material = superMaterial;
+
+        SuperActivated?.Invoke(true);
+
+        while (timer > 0)
+        {
+            yield return new WaitForSeconds(1);
+            timer--;
+        }
+
+        renderer.material = defaultMaterial;
+
+        SuperActivated?.Invoke(false);
+
+        isSuper = false;
+
     }
 
 
@@ -56,12 +122,25 @@ public class Ball : MonoBehaviour
 
         gameObject.SetActive(true);
 
+        renderer.material = defaultMaterial;
+
+
+        timer = 0;
+        isSuper = false;
+
         FireBall();
     }
 
     public void StopBall()
     {
         body.isKinematic = true;
+    }
+
+
+    public void SelfDestruct()
+    {
+        OnFail.Invoke();
+        gameObject.SetActive(false);    
     }
 
 }

@@ -41,10 +41,17 @@ public class Bat : MonoBehaviour
         defaultScale = transform.localScale.x;
     }
 
-    private void OnEnable() => input.onActionTriggered += ReadAction;
+    private void OnEnable()
+    {
+        input.onActionTriggered += ReadAction;
+        Bonus.OnBonusCollected += CollectBonus;
+    }
 
-    private void OnDisable() => input.onActionTriggered -= ReadAction;
-
+    private void OnDisable()
+    {
+        input.onActionTriggered -= ReadAction;
+        Bonus.OnBonusCollected -= CollectBonus;
+    }
 
     void ReadAction (InputAction.CallbackContext context)
     {
@@ -60,9 +67,6 @@ public class Bat : MonoBehaviour
 
                 body.drag = 0;
 
-                if (movement.y > 0 && transform.localScale.x >= defaultScale / 1.5f) transform.DOScaleX(transform.localScale.x - sizeStep, 0.5f);
-                else if (movement.y < 0 && transform.localScale.x <= defaultScale * 1.5f) transform.DOScaleX(transform.localScale.x + sizeStep, 0.5f);
-
             }
             else if (context.canceled) body.drag = drag;
         }
@@ -75,5 +79,25 @@ public class Bat : MonoBehaviour
 
         transform.localScale = new Vector3(defaultScale, transform.localScale.y, transform.localScale.z);
     }
+
+
+    void CollectBonus(Bonus.BonusType type)
+    {
+        if (type == Bonus.BonusType.Expand) Expand();
+        else if (type == Bonus.BonusType.Shrink) Shrink();
+    }
+
+
+    void Expand()
+    {        
+        if (transform.localScale.x <= defaultScale * 1.5f) transform.DOScaleX(transform.localScale.x + sizeStep, 0.5f);
+    }
+
+    void Shrink()
+    {
+        if (transform.localScale.x >= defaultScale / 1.5f) transform.DOScaleX(transform.localScale.x - sizeStep, 0.5f);
+    }
+
+
 
 }

@@ -20,6 +20,8 @@ public class Block : MonoBehaviour
 
     new MeshRenderer renderer;
 
+    BoxCollider collider;
+
     public delegate void OnDestroy();
 
 
@@ -33,6 +35,8 @@ public class Block : MonoBehaviour
 
     [SerializeField] AudioClip breakSound;
 
+    [SerializeField] Bonus bonusPrefab;
+
     Color color;
 
     int health;
@@ -44,11 +48,19 @@ public class Block : MonoBehaviour
 
         renderer = GetComponent<MeshRenderer>();
 
+        collider = GetComponent<BoxCollider>();
+
         if (pallete.Length > 0) color = pallete[Random.Range(0, pallete.Length)];
 
         UpdateView();
        
     }
+
+
+    private void OnEnable() => Ball.SuperActivated += SuperActivated;
+    private void OnDisable() => Ball.SuperActivated -= SuperActivated;
+
+    void SuperActivated(bool isActivated) => collider.isTrigger = isActivated;
 
 
     void UpdateView()
@@ -60,13 +72,8 @@ public class Block : MonoBehaviour
         renderer.material.color = new Color(color.r, color.g, color.b, renderer.material.color.a);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-
+   
     private void OnCollisionExit(Collision collision)
     {
 
@@ -80,11 +87,17 @@ public class Block : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter(Collider other) => OnBlockDestroyed?.Invoke(this, DestroyBlock);
+
+
     void DestroyBlock()
     {
         Instantiate(debrisParticles, transform.position, Quaternion.identity);
 
         AudioFX.instance.Play(breakSound);
+
+        if (bonusPrefab != null && Random.Range(0, 11) > 6) Instantiate(bonusPrefab, transform.position, Quaternion.identity);
+
 
         Destroy(gameObject);
     }
