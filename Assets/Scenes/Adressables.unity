@@ -261,6 +261,16 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  audioClip:
+    m_AssetGUID: 7dc48ac47b618424f8d032a339525809
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  restrictedObject:
+    m_AssetGUID: 500dd03d3a41b3044863ea1956dda4b9
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!4 &391837257
 Transform:
   m_ObjectHideFlags: 0

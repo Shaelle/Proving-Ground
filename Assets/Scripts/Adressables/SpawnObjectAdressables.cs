@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 
 [System.Serializable]
 public class CustomAssetReference : AssetReferenceT<Block>
 {
     public CustomAssetReference(string guid) : base(guid)
+    {
+    }
+}
+
+[System.Serializable]
+public class AudioAssetReference : AssetReferenceT<AudioClip>
+{
+    public AudioAssetReference(string guid) : base(guid)
     {
     }
 }
@@ -23,6 +32,11 @@ public class SpawnObjectAdressables : MonoBehaviour
     [SerializeField] AssetReferenceSprite sprite;
 
     [SerializeField] CustomAssetReference block;
+
+    [SerializeField] AudioAssetReference audioClip;
+
+    [SerializeField, AssetReferenceUILabelRestriction("Blocks")] AssetReferenceGameObject restrictedObject;
+
 
     List<GameObject> spawnedObjects = new List<GameObject>();
 

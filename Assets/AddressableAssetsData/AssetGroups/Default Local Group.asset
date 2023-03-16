@@ -25,10 +25,16 @@ MonoBehaviour:
   - m_GUID: 500dd03d3a41b3044863ea1956dda4b9
     m_Address: Assets/Arcanoid/Prefabs/Block.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Blocks
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f174a391dec72e14f8a303fee21396f0
     m_Address: Assets/Art/Boom Star.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dc48ac47b618424f8d032a339525809
+    m_Address: Assets/Audio/Free Pack/Thunder strikes 30 second- Loop.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
