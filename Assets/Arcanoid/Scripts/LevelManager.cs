@@ -14,17 +14,23 @@ public class LevelManager : MonoBehaviour
 
     public UnityEvent OnWin;
     public UnityEvent OnLose;
+    public UnityEvent OnNewLife;
+
+    public UnityEvent<int> UpdateScore;
 
 
     PlayerInput input;
 
 
-    enum Status { ready, play, endgame}
+    enum Status { ready, play, newLife, lose, win}
     Status status = Status.ready;
 
 
     InputActionMap actionMap;
     InputAction trigger;
+
+    [SerializeField, Min(1)] int scorePerBlock = 100;
+    int score = 0;
 
 
     private void Awake()
@@ -33,22 +39,48 @@ public class LevelManager : MonoBehaviour
         trigger = input.currentActionMap.FindAction("Fire");
     }
 
-    private void OnEnable() => input.onActionTriggered += ReadAction;
-    private void OnDisable() => input.onActionTriggered -= ReadAction;
 
+    private void Start()
+    {
+        UpdateScore.Invoke(score);
+    }
+
+    private void OnEnable()
+    {
+        input.onActionTriggered += ReadAction;
+        Block.OnBlockDestroyed += AddScore;
+    }
+
+    private void OnDisable()
+    {
+        input.onActionTriggered -= ReadAction;
+        Block.OnBlockDestroyed -= AddScore;
+    }
 
     void ReadAction(InputAction.CallbackContext context)
     {
         if (context.performed && context.action == trigger)
         {
-            if (status == Status.endgame)
+            if (status == Status.lose || status == Status.win)
             {
                 OnRestart.Invoke();
+
+                if (status == Status.lose)
+                {
+                    score = 0;
+                    UpdateScore.Invoke(score);
+                }
+
                 status = Status.ready;
             }
             else if (status == Status.ready)
             {
                 OnBeginPlay.Invoke();
+                status = Status.play;
+            }
+            else if (status == Status.newLife)
+            {
+                OnNewLife.Invoke();
                 status = Status.play;
             }
         }
@@ -59,14 +91,28 @@ public class LevelManager : MonoBehaviour
     public void Lose()
     {
         OnLose.Invoke();
-        status = Status.endgame;
+        status = Status.lose;
     }
 
 
     public void Win()
     {
         OnWin.Invoke();
-        status = Status.endgame;
+        status = Status.win;
+    }
+
+
+    public void LostLife()
+    {
+        status = Status.newLife;
+    }
+
+
+    private void AddScore(Block block, Block.OnDestroy destroy)
+    {
+        score += scorePerBlock;
+
+        UpdateScore.Invoke(score);
     }
 
 

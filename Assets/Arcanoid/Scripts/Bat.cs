@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bat : MonoBehaviour
@@ -26,9 +27,15 @@ public class Bat : MonoBehaviour
 
     const float sizeStep = 2.5f;
 
-   
+    [SerializeField, Min(1)] int lifes = 3;
+    int currLifes;
 
 
+    public UnityEvent OnLose;
+    public UnityEvent<int> LifesChanged;
+
+    public UnityEvent LifeLost;
+    
 
     private void Awake() => body = GetComponent<Rigidbody>();
 
@@ -39,6 +46,8 @@ public class Bat : MonoBehaviour
 
         defaultPosition = transform.position;
         defaultScale = transform.localScale.x;
+
+        ResetLifes();
     }
 
     private void OnEnable()
@@ -85,6 +94,13 @@ public class Bat : MonoBehaviour
     }
 
 
+    public void ResetLifes()
+    {
+        currLifes = lifes;
+        LifesChanged.Invoke(lifes);
+    }
+
+
     void CollectBonus(Bonus.BonusType type)
     {
         if (type == Bonus.BonusType.Expand) Expand();
@@ -110,6 +126,12 @@ public class Bat : MonoBehaviour
 
         body.AddForce(Vector3.down * 100);
         body.AddTorque(new Vector3(10, 20, 5));
+
+        currLifes--;
+        LifesChanged.Invoke(currLifes);
+
+        if (currLifes <= 0) OnLose.Invoke();
+        else LifeLost.Invoke();
     }
 
 
