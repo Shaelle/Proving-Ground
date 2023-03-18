@@ -37,6 +37,8 @@ public class Block : MonoBehaviour
 
     [SerializeField] Bonus bonusPrefab;
 
+    [SerializeField] GameObject glassCube;
+
     Color color;
 
     int health;
@@ -67,7 +69,17 @@ public class Block : MonoBehaviour
     {
         if (health == 3) renderer.material = health3;
         else if (health == 2) renderer.material = health2;
-        else renderer.material = health1;
+        else
+        {
+            renderer.enabled = false;
+            glassCube.SetActive(true);
+            MeshRenderer rend = glassCube.GetComponent<MeshRenderer>();
+
+            rend.materials[0].color = color;
+
+
+           // renderer.material = health1;
+        }
 
         renderer.material.color = new Color(color.r, color.g, color.b, renderer.material.color.a);
     }
