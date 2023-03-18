@@ -604,6 +604,7 @@ MonoBehaviour:
   speed: 12
   hitSound: {fileID: 8300000, guid: 235cd029049a14f7caaea0a4bea1b829, type: 3}
   superMaterial: {fileID: 2100000, guid: 17f145d69c5649846b4669a0eddf3338, type: 2}
+  sparks: {fileID: 1733849060043215959, guid: 6eca13a4c2c47564e831355edcab05b8, type: 3}
   OnFail:
     m_PersistentCalls:
       m_Calls:

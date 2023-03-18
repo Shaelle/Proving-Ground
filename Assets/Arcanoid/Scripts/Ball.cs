@@ -15,6 +15,8 @@ public class Ball : MonoBehaviour, IDestructable
 
     [SerializeField] Material superMaterial;
 
+    [SerializeField] ParticleSystem sparks;
+
 
     public static event System.Action<bool> SuperActivated;
 
@@ -107,6 +109,8 @@ public class Ball : MonoBehaviour, IDestructable
     private void OnCollisionEnter(Collision collision)
     {
         AudioFX.instance.Play(hitSound);
+
+        Instantiate(sparks, collision.GetContact(0).point, Quaternion.identity);
     }
 
     private void LateUpdate()
