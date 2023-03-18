@@ -55,8 +55,7 @@ public class Bat : MonoBehaviour
 
     void ReadAction (InputAction.CallbackContext context)
     {
-
-        if (context.action == move)
+        if (context.action == move && !body.useGravity)
         {
 
             if (context.performed)
@@ -76,8 +75,13 @@ public class Bat : MonoBehaviour
     public void ResetBat()
     {
         transform.position = defaultPosition;
+        transform.rotation = Quaternion.identity;
 
         transform.localScale = new Vector3(defaultScale, transform.localScale.y, transform.localScale.z);
+
+        body.useGravity = false;
+        body.constraints = RigidbodyConstraints.FreezeAll;
+        body.constraints &= ~RigidbodyConstraints.FreezePositionX;
     }
 
 
@@ -96,6 +100,16 @@ public class Bat : MonoBehaviour
     void Shrink()
     {
         if (transform.localScale.x >= defaultScale / 1.5f) transform.DOScaleX(transform.localScale.x - sizeStep, 0.5f);
+    }
+
+
+    public void Fail()
+    {
+        body.useGravity = true;
+        body.constraints = RigidbodyConstraints.None;
+
+        body.AddForce(Vector3.down * 100);
+        body.AddTorque(new Vector3(10, 20, 5));
     }
 
 
