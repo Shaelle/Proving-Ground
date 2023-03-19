@@ -62,8 +62,10 @@ public class Block : MonoBehaviour
     private void OnEnable() => Ball.SuperActivated += SuperActivated;
     private void OnDisable() => Ball.SuperActivated -= SuperActivated;
 
-    void SuperActivated(bool isActivated) => collider.isTrigger = isActivated;
-
+    void SuperActivated(bool isActivated)
+    {
+        if (collider != null) collider.isTrigger = isActivated;
+    }
 
     void UpdateView()
     {

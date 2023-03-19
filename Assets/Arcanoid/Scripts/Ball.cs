@@ -99,6 +99,8 @@ public class Ball : MonoBehaviour, IDestructable
 
             body.isKinematic = false;
 
+            body.velocity = Vector3.zero;
+
             Vector3 initForce = new Vector3(Random.Range(-8, 8), 4).normalized;
 
             body.velocity = (initForce * speed);
@@ -131,6 +133,8 @@ public class Ball : MonoBehaviour, IDestructable
 
         timer = 0;
         isSuper = false;
+
+        SuperActivated?.Invoke(false);
 
         FireBall();
     }
