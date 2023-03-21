@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+
 
 
 public class LevelCreator : MonoBehaviour
 {
 
-    [SerializeField] Block prefab;
+    [SerializeField] AssetReferenceGameObject prefab;
 
     [SerializeField] float minX = -5;
     [SerializeField] float maxX = 5;
@@ -24,6 +24,9 @@ public class LevelCreator : MonoBehaviour
     List<Block> blocks = new List<Block>();
 
     public UnityEvent OnFinish;
+
+    public UnityEvent OnBeginLoad;
+    public UnityEvent OnLoaded;
 
     // Start is called before the first frame update
     void Start()
@@ -43,17 +46,20 @@ public class LevelCreator : MonoBehaviour
     private void OnDisable() => Block.OnBlockDestroyed -= RemoveBlock;
 
 
-    public void GenerateLevel()
+    async public void GenerateLevel()
     {
+
+        OnBeginLoad.Invoke();
+
         float x = minX;
         float y = minY;
 
-        float size = prefab.GetComponent<MeshRenderer>().bounds.size.magnitude;
+        float size = 0;
 
 
         for (int i = blocks.Count - 1; i >= 0; i--)
         {
-           if (blocks[i] != null) Destroy(blocks[i].gameObject);
+           if (blocks[i] != null)  prefab.ReleaseInstance(blocks[i].gameObject);
         }
 
         blocks.Clear();
@@ -71,11 +77,21 @@ public class LevelCreator : MonoBehaviour
                 if (random > 2)
                 {
 
-                    Block block = Instantiate(prefab);
+                    GameObject obj = await prefab.InstantiateAsync().Task;
 
-                    block.transform.position = new Vector3(x, y, zPoz);
+                    Block block = obj.GetComponent<Block>();
 
-                    blocks.Add(block);
+                    if (block != null)
+                    {
+
+                        if (size == 0) size = block.GetComponent<MeshRenderer>().bounds.size.magnitude;
+
+                        block.transform.position = new Vector3(x, y, zPoz);
+
+                        blocks.Add(block);
+                    }
+                    else Debug.LogWarning("Object " + obj.name + " is not a block.");
+    
                 }
 
                 y += size / 2 + offset;
@@ -85,14 +101,20 @@ public class LevelCreator : MonoBehaviour
             
         }
 
+        OnLoaded.Invoke();
+
     }
+
+
+
 
 
     public void RemoveBlock(Block block, Block.OnDestroy destroy)
     {
 
         blocks.Remove(block);
-        destroy?.Invoke();
+
+        destroy?.Invoke(prefab);
 
         if (blocks.Count == 0) OnFinish.Invoke();
     }

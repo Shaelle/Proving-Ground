@@ -22,8 +22,8 @@ public class LevelManager : MonoBehaviour
     PlayerInput input;
 
 
-    enum Status { ready, play, newLife, lose, win}
-    Status status = Status.ready;
+    enum Status { loading, ready, play, newLife, lose, win}
+    Status status = Status.loading;
 
 
     InputActionMap actionMap;
@@ -61,6 +61,7 @@ public class LevelManager : MonoBehaviour
     {
         if (context.performed && context.action == trigger)
         {
+
             if (status == Status.lose || status == Status.win)
             {
                 OnRestart.Invoke();
@@ -71,7 +72,7 @@ public class LevelManager : MonoBehaviour
                     UpdateScore.Invoke(score);
                 }
 
-                status = Status.ready;
+                status = Status.loading;
             }
             else if (status == Status.ready)
             {
@@ -87,6 +88,11 @@ public class LevelManager : MonoBehaviour
 
     }
 
+
+    public void LevelLoaded()
+    {
+        if (status == Status.loading) status = Status.ready;
+    }
 
     public void Lose()
     {

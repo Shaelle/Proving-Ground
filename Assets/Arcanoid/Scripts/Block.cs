@@ -4,13 +4,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 
-[System.Serializable]
-public class AssetReferenceBlock : AssetReferenceT<Block>
-{
-    public AssetReferenceBlock(string guid) : base(guid)
-    {
-    }
-}
 
 
 public class Block : MonoBehaviour
@@ -22,7 +15,7 @@ public class Block : MonoBehaviour
 
     BoxCollider collider;
 
-    public delegate void OnDestroy();
+    public delegate void OnDestroy(AssetReferenceGameObject reference);
 
 
     [SerializeField] Material health1;
@@ -104,7 +97,7 @@ public class Block : MonoBehaviour
     private void OnTriggerEnter(Collider other) => OnBlockDestroyed?.Invoke(this, DestroyBlock);
 
 
-    void DestroyBlock()
+    void DestroyBlock(AssetReferenceGameObject reference)
     {
         Instantiate(debrisParticles, transform.position, Quaternion.identity);
 
@@ -112,7 +105,6 @@ public class Block : MonoBehaviour
 
         if (bonusPrefab != null && Random.Range(0, 11) > 6) Instantiate(bonusPrefab, transform.position, Quaternion.identity);
 
-
-        Destroy(gameObject);
+        reference.ReleaseInstance(gameObject);
     }
 }

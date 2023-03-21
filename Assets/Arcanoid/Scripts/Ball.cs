@@ -136,7 +136,6 @@ public class Ball : MonoBehaviour, IDestructable
 
         SuperActivated?.Invoke(false);
 
-        FireBall();
     }
 
     public void StopBall()
