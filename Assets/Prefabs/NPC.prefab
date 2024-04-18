@@ -255,4 +255,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac265b89e5b70b44beae4f491858d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceThreshold: 0.7
+  distanceThreshold: 0.1
