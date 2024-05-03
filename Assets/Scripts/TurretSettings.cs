@@ -10,7 +10,7 @@ public class TurretSettings : ScriptableObject
     public float SensitivityHor => sensitivityHor;
 
     [SerializeField] float sensitivityVert = 9;
-    public float SensitivityVert => SensitivityVert;
+    public float SensitivityVert => sensitivityVert;
 
     [SerializeField] float minVert = -45;
     public float MinVert => minVert;

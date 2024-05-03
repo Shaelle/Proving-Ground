@@ -71,12 +71,12 @@ public class Bat : MonoBehaviour
             {
                 Vector2 movement = context.ReadValue<Vector2>();
 
-                body.velocity = new Vector3(movement.x, 0) * sensitivity;
+                body.linearVelocity = new Vector3(movement.x, 0) * sensitivity;
 
-                body.drag = 0;
+                body.linearDamping = 0;
 
             }
-            else if (context.canceled) body.drag = drag;
+            else if (context.canceled) body.linearDamping = drag;
         }
     }
 

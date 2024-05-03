@@ -94,16 +94,16 @@ public class Ball : MonoBehaviour, IDestructable
     public  void FireBall()
     {
 
-        if (Vector3.Distance(body.velocity, Vector3.zero) < 0.01f)
+        if (Vector3.Distance(body.linearVelocity, Vector3.zero) < 0.01f)
         {
 
             body.isKinematic = false;
 
-            body.velocity = Vector3.zero;
+            body.linearVelocity = Vector3.zero;
 
             Vector3 initForce = new Vector3(Random.Range(-8, 8), 4).normalized;
 
-            body.velocity = (initForce * speed);
+            body.linearVelocity = (initForce * speed);
         }
     }
 
@@ -117,7 +117,7 @@ public class Ball : MonoBehaviour, IDestructable
 
     private void LateUpdate()
     {
-        if (!body.isKinematic) body.velocity = (Vector3.Normalize(body.velocity) * speed);
+        if (!body.isKinematic) body.linearVelocity = (Vector3.Normalize(body.linearVelocity) * speed);
     }
 
 
